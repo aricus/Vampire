@@ -13,6 +13,7 @@ public enum Permission
 	COMMAND_SETINFECTION("vampire.command.setinfection"),
 	COMMAND_SETFOOD("vampire.command.setfood"),
 	COMMAND_VERSION("vampire.command.version"),
+	COMMAND_FEED("vampire.command.feed"),
 	;
 	
 	public final String node;

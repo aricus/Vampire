@@ -36,6 +36,15 @@ public class Lang
 	public static String infectNoRecentOffer = "<b>No vampire offered to infect you recently.";
 	public static String infectYouDrinkSomeOfXBlood = "<i>You drink some of <h>%s's<i> blood.";
 	public static String infectXDrinkSomeOfYourBlood = "<h>%s<i> drinks some of your blood.";
+
+	public static String feedYouMustStandCloseToY = "<b>You must stand close to <h>%s <i>for this to work.";
+	public static String feedXOffersToInfectYou = "<h>%s<i> asks to feed from you.";
+	public static String feedYouOfferToInfectX = "<i>You offer to feed from <h>%s<i>.";
+	public static String feedTypeXToAccept = "<i>Type %s<i> to accept.";
+	public static String feedNoRecentOffer = "<b>No vampire offered to feed from you recently.";
+	public static String feedYouDrinkSomeOfXBlood = "<h>%s<i> drinks some of your blood which makes the world spin for a moment.";
+	public static String feedXDrinkSomeOfYourBlood = "<i>You drink some of <h>%s's<i> blood and feel renewed.";
+	
 	
 	public static List<String> infectionMessagesProgress = new ArrayList<String>();
 	public static List<String> infectionBreadHintMessages = new ArrayList<String>();

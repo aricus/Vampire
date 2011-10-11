@@ -46,7 +46,9 @@ public class VPlayer extends PlayerEntity
 	
 	// Used for the infec and accept commands.
 	private transient VPlayer infectionOfferedFrom;
+	private transient VPlayer feedOfferedFrom;
 	private transient long infectionOfferedAtTicks;
+	private transient long feedOfferedAtTicks;
 	
 	public boolean isHealthy()
 	{
@@ -163,6 +165,37 @@ public class VPlayer extends PlayerEntity
 		you.damage(2);
 	}
 	
+	public void acceptFeed()
+	{
+		VPlayer vyou = this.feedOfferedFrom;
+		if (vyou == null || System.currentTimeMillis() - this.feedOfferedAtTicks > Conf.cmdInfectMillisRecentTolerance)
+		{
+			this.msg(p.txt.parse(Lang.feedNoRecentOffer));
+			return;
+		}
+		
+		Player me = this.getPlayer();
+		Player you = vyou.getPlayer();
+		
+		// Check the player-distance
+		Location l1 = me.getLocation();
+		Location l2 = you.getLocation();
+		
+		if ( ! l1.getWorld().equals(l2.getWorld()) || l1.distance(l2) > Conf.cmdInfectMaxDistance)
+		{
+			me.sendMessage(p.txt.parse(Lang.feedYouMustStandCloseToY, you.getDisplayName()));
+			return;
+		}
+		
+		me.sendMessage(p.txt.parse(Lang.feedYouDrinkSomeOfXBlood, you.getDisplayName()));
+		you.sendMessage(p.txt.parse(Lang.feedXDrinkSomeOfYourBlood, me.getDisplayName()));
+		
+		if (this.isVampire()) return;
+		
+		me.damage(8);
+		vyou.foodAdd(16);
+	}
+	
 	public void offerInfectionTo(VPlayer vyou)
 	{
 		Player me = this.getPlayer();
@@ -187,7 +220,31 @@ public class VPlayer extends PlayerEntity
 		vyou.msg(p.txt.parse(Lang.infectTypeXToAccept, p.cmdBase.cmdAccept.getUseageTemplate(cmdc, false))); //TODO: Link to the accept command!
 		me.sendMessage(p.txt.parse(Lang.infectYouOfferToInfectX, you.getDisplayName()));
 	}
-	
+
+	public void offerFeedTo(VPlayer vyou)
+	{
+		Player me = this.getPlayer();
+		Player you = vyou.getPlayer();
+		
+		// Check the player-distance
+		Location l1 = me.getLocation();
+		Location l2 = you.getLocation();
+		
+		if ( ! l1.getWorld().equals(l2.getWorld()) || l1.distance(l2) > Conf.cmdInfectMaxDistance)
+		{
+			this.msg(p.txt.parse(Lang.feedYouMustStandCloseToY, you.getDisplayName()));
+			return;
+		}
+		
+		vyou.feedOfferedFrom = this;
+		vyou.feedOfferedAtTicks = System.currentTimeMillis();
+		vyou.msg(p.txt.parse(Lang.feedXOffersToInfectYou, me.getDisplayName()));
+		
+		List<MCommand<?>> cmdc = new ArrayList<MCommand<?>>();
+		cmdc.add(p.cmdBase);
+		vyou.msg(p.txt.parse(Lang.feedTypeXToAccept, p.cmdBase.cmdAcceptFeed.getUseageTemplate(cmdc, false))); //TODO: Link to the accept command!
+		me.sendMessage(p.txt.parse(Lang.feedYouOfferToInfectX, you.getDisplayName()));
+	}
 	// -------------------------------------------- //
 	// Food. The food is handled as a double from 0 to 20
 	// This system uses an accumulator to wrap the int in a double

@@ -5,6 +5,7 @@ import com.massivecraft.vampire.config.Conf;
 public class CmdBase extends VCommand
 {
 	public CmdAccept cmdAccept = new CmdAccept();
+	public CmdAcceptFeed cmdAcceptFeed = new CmdAcceptFeed();
 	
 	public CmdBase()
 	{
@@ -14,7 +15,9 @@ public class CmdBase extends VCommand
 		this.subCommands.add(p.cmdHelp);
 		this.subCommands.add(new CmdIntend());
 		this.subCommands.add(new CmdInfect());
+		this.subCommands.add(new CmdFeed());
 		this.subCommands.add(cmdAccept);
+		this.subCommands.add(cmdAcceptFeed);
 		this.subCommands.add(new CmdList());
 		this.subCommands.add(new CmdSetfood());
 		this.subCommands.add(new CmdSetinfection());
